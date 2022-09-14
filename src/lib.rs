@@ -48,7 +48,6 @@ fn dotenv_inner(_item: TokenStream) -> Result<TokenStream, DotenvError> {
         .map(|line| {
             let (key, value) = line.split_once('=').unwrap();
 
-            let key = proc_macro2::Literal::string(key);
             let value = proc_macro2::Literal::string(value);
 
             quote! {
