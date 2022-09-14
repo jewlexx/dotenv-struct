@@ -32,7 +32,7 @@ pub fn dotenv(item: proc_macro::TokenStream) -> proc_macro::TokenStream {
 fn dotenv_inner(_item: TokenStream) -> Result<TokenStream, DotenvError> {
     let dotenv_path = dotenv::dotenv()?;
 
-    let file = File::open(dotenv_path)?;
+    let mut file = File::open(dotenv_path)?;
 
     let dotenv_contents = {
         let mut buf = String::new();
