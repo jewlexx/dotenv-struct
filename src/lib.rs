@@ -43,23 +43,26 @@ fn dotenv_inner(_item: TokenStream) -> Result<TokenStream, DotenvError> {
         buf
     };
 
-    dotenv_contents.lines().map(|line| {
-        let (key, value) = {
-            let mut iter = line.splitn(2, '=');
+    dotenv_contents
+        .lines()
+        .map(|line| {
+            let (key, value) = {
+                let mut iter = line.splitn(2, '=');
 
-            let key = iter.next().unwrap();
-            let value = iter.next().unwrap();
+                let key = iter.next().unwrap();
+                let value = iter.next().unwrap();
 
-            (key, value)
-        };
+                (key, value)
+            };
 
-        let key = proc_macro2::Literal::string(key);
-        let value = proc_macro2::Literal::string(value);
+            let key = proc_macro2::Literal::string(key);
+            let value = proc_macro2::Literal::string(value);
 
-        quote! {
-            const #key: &str = #value;
-        }
-    });
+            quote! {
+                const #key: &str = #value;
+            }
+        })
+        .collect::<Vec<proc_macro2::TokenStream>>();
 
     quote! {}
 }
