@@ -14,3 +14,4 @@ litrs = "0.2.3"
 proc-macro2 = "1.0.43"
 quote = "1.0.21"
 syn = { version = "1.0.99", features = ["full"] }
+thiserror = "1.0.35"
