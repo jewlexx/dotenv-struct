@@ -43,7 +43,7 @@ fn dotenv_inner(_item: TokenStream) -> Result<TokenStream, DotenvError> {
         buf
     };
 
-    dotenv_contents
+    let dotenv_consts = dotenv_contents
         .lines()
         .map(|line| {
             let (key, value) = {
@@ -64,5 +64,9 @@ fn dotenv_inner(_item: TokenStream) -> Result<TokenStream, DotenvError> {
         })
         .collect::<Vec<proc_macro2::TokenStream>>();
 
-    quote! {}
+    Ok(quote! {
+        mod dotenv {
+            #(#dotenv_consts)*
+        }
+    })
 }
