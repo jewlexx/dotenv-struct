@@ -14,14 +14,23 @@ enum DotenvError {
 
 #[proc_macro]
 pub fn dotenv(item: proc_macro::TokenStream) -> proc_macro::TokenStream {
-    dotenv_inner(item.into()).into()
+    match dotenv_inner(item.into()) {
+        Ok(v) => v,
+        Err(e) => {
+            let msg = format!("{}", e);
+            let msg = proc_macro2::Literal::string(&msg);
+
+            return quote! {
+                compile_error!(#msg);
+            }
+            .into();
+        }
+    }
+    .into()
 }
 
 fn dotenv_inner(_item: TokenStream) -> Result<TokenStream, DotenvError> {
-    let dotenv_path = match dotenv::dotenv() {
-        Ok(v) => v,
-        Err(_) => return quote! { compile_error!("Could not find .env file") },
-    };
+    let dotenv_path = dotenv::dotenv()?;
 
     let file = File::open(dotenv_path);
 
