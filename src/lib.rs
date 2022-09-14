@@ -47,7 +47,7 @@ fn dotenv_inner(_item: TokenStream) -> Result<TokenStream, DotenvError> {
         .lines()
         .map(|line| {
             let (key, value) = {
-                let mut iter = line.splitn(2, '=');
+                let mut iter = line.split_once('=').unwrap();
 
                 let key = iter.next().unwrap();
                 let value = iter.next().unwrap();
