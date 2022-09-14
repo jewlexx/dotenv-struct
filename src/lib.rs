@@ -38,7 +38,7 @@ fn dotenv_inner(_item: TokenStream) -> Result<TokenStream, DotenvError> {
         let mut buf = String::new();
         file.read_to_string(&mut buf)?;
 
-        buf.replace("export ", "");
+        buf = buf.replace("export ", "");
 
         buf
     };
